@@ -163,15 +163,13 @@ const createCampus = async (req, res) => {
 /**
  * Update campus details
  * PUT /api/v1/system-setup/campuses/:id
+ *
+ * HOMEWORK: complete this handler. Use getCampusById and createCampus above as the pattern.
  */
 const updateCampus = async (req, res) => {
   try {
     const { id } = req.params;
     const campus = await Campus.findOne({ _id: id, isDeleted: false });
-
-    if (!campus) {
-      return errorResponse(res, 'Campus not found', 404);
-    }
 
     const {
       name,
@@ -193,45 +191,27 @@ const updateCampus = async (req, res) => {
       status,
     } = req.body;
 
-    if (code) {
-      const normalizedCode = code.toUpperCase().trim();
-      if (normalizedCode !== campus.code) {
-        const duplicate = await Campus.findOne({
-          code: normalizedCode,
-          _id: { $ne: id },
-          isDeleted: false,
-        });
-        if (duplicate) {
-          return errorResponse(res, 'Another campus is already using this campus code.', 409);
-        }
-        campus.code = normalizedCode;
-      }
-    }
+    // 1. If campus was not found, return errorResponse with 'Campus not found' and status 404.
 
-    if (name) campus.name = name.trim();
-    if (campusNumber !== undefined) campus.campusNumber = campusNumber.trim();
-    if (region) campus.region = region;
-    if (district) campus.district = district.trim();
-    if (address !== undefined) campus.address = address.trim();
-    if (contactEmail) campus.contactEmail = contactEmail.trim().toLowerCase();
-    if (contactPhone !== undefined) campus.contactPhone = contactPhone.trim();
-    if (directorName !== undefined) campus.directorName = directorName.trim();
-    if (aoEmail !== undefined) campus.aoEmail = aoEmail.trim().toLowerCase();
-    if (deanAcademicsEmail !== undefined) campus.deanAcademicsEmail = deanAcademicsEmail.trim().toLowerCase();
-    if (coeEmail !== undefined) campus.coeEmail = coeEmail.trim().toLowerCase();
-    if (establishedYear !== undefined) campus.establishedYear = Number(establishedYear);
-    if (annualIntake !== undefined) campus.annualIntake = Number(annualIntake);
-    if (currentStrength !== undefined) campus.currentStrength = Number(currentStrength);
-    if (landAreaAcres !== undefined) campus.landAreaAcres = Number(landAreaAcres);
-    if (status) campus.status = status;
+    // 2. If a new code was sent and it is different from campus.code:
+    //    - trim it and convert it to uppercase
+    //    - find another active campus (isDeleted: false) that already uses that code, excluding this id
+    //    - if one exists, return errorResponse with status 409
+    //    - otherwise assign the normalized code to campus.code
 
-    await campus.save();
+    // 3. Copy the remaining body fields onto campus only when they were sent.
+    //    Trim strings, lowercase email fields, and convert year / intake / strength / land area with Number().
+    //    Follow the same field cleaning used in createCampus.
 
-    return successResponse(res, 'Campus updated successfully', campus);
+    // 4. Save the campus document.
+
+    // 5. Return successResponse with message 'Campus updated successfully' and the updated campus.
+
+    // Remove this line once the steps above return a response.
+    return errorResponse(res, 'Update campus is not implemented yet', 501);
   } catch (error) {
-    if (error.code === 11000) {
-      return errorResponse(res, 'A campus with this code or name already exists.', 409);
-    }
+    // If error.code is 11000, the code or name is already taken. Return status 409.
+    // Same check as the catch block in createCampus.
     return errorResponse(res, error.message, 500);
   }
 };
@@ -239,26 +219,30 @@ const updateCampus = async (req, res) => {
 /**
  * Soft delete a campus
  * DELETE /api/v1/system-setup/campuses/:id
+ *
+ * HOMEWORK: complete this handler. Do not remove the document from MongoDB.
  */
 const deleteCampus = async (req, res) => {
   try {
     const { id } = req.params;
     const campus = await Campus.findOne({ _id: id, isDeleted: false });
 
-    if (!campus) {
-      return errorResponse(res, 'Campus not found or already deleted', 404);
-    }
+    // 1. If campus was not found, return errorResponse with
+    //    'Campus not found or already deleted' and status 404.
 
-    campus.isDeleted = true;
-    campus.deletedAt = new Date();
-    campus.status = 'Inactive';
-    await campus.save();
+    // 2. Soft delete the campus:
+    //    - set isDeleted to true
+    //    - set deletedAt to the current date
+    //    - set status to 'Inactive'
+    //    Do not use deleteOne or findByIdAndDelete.
 
-    return successResponse(res, `Campus ${campus.name} (${campus.code}) deleted successfully`, {
-      id: campus._id,
-      name: campus.name,
-      code: campus.code,
-    });
+    // 3. Save the campus document.
+
+    // 4. Return successResponse. Include the campus name and code in the message,
+    //    and send back { id, name, code }.
+
+    // Remove this line once the steps above return a response.
+    return errorResponse(res, 'Delete campus is not implemented yet', 501);
   } catch (error) {
     return errorResponse(res, error.message, 500);
   }

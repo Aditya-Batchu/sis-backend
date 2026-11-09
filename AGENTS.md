@@ -49,11 +49,22 @@ When asked to simplify, optimize, clean up, or reduce code:
 - Prefer removing code over adding another abstraction.
 - Remove code made unnecessary by the change.
 
+## Project Tracker Synchronization
+
+Whenever code, APIs, schemas, UI components, or architectural features are implemented, modified, or completed:
+- Always update the project tracker to reflect current progress, block statuses, and the changelog.
+- Maintain **strict synchronization** across all tracker files:
+  - `backend/PROJECT_TRACKER.md`
+  - `frontend/PROJECT_TRACKER.md`
+  - `./PROJECT_TRACKER.md`
+- Any change to one tracker file must be mirrored identically to the others in the same commit/task.
+
 ## Before Finishing
 
 Review the diff once.
 Check that:
 - The requirement is fully satisfied.
+- Tracker files (`backend/PROJECT_TRACKER.md`, `frontend/PROJECT_TRACKER.md`, and `./PROJECT_TRACKER.md`) are updated and in exact sync.
 - Existing project conventions are followed.
 - No unnecessary code or abstractions were introduced.
 - No database calls exist inside loops.

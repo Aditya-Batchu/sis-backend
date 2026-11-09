@@ -3,6 +3,9 @@
 > **System Overview**: 6-Year Integrated B.Tech (2-Year PUC + 4-Year B.Tech) Student Information System for RGUKT (AP - Nuzvid, RK Valley, Ongole, Srikakulam).
 > **Tech Stack**: 100% Free MERN (MongoDB + Express.js + React Vite + Node.js) with Tailwind CSS, AG-Grid Community, Redux Toolkit, Lucide Icons.
 > **Architecture Principle**: Multi-campus tenant isolation via `campusId`, partial unique indexes, soft deletes, bulk operations, and minimal/clean diffs (Lazy Developer rules).
+>
+> [!IMPORTANT]
+> **Synchronization Rule**: This tracker is mirrored across `./PROJECT_TRACKER.md`, `backend/PROJECT_TRACKER.md`, and `frontend/PROJECT_TRACKER.md`. Whenever code updates occur, all three copies must be updated and kept strictly identical.
 
 ---
 
@@ -107,3 +110,4 @@ Phase 1: System Setup
 - **[2026-10-06]**: `AGENTS.md` and `lazy-developer` skill configured.
 - **[2026-10-06]**: Created `PROJECT_TRACKER.md` with complete Phase 1 breakdown.
 - **[2026-10-08]**: Updated Block 2 roadmap with Role-Based Multi-Campus Isolation and Stage-Adaptive Section (PUC) vs Branch (B.Tech) tab views.
+- **[2026-11-09]**: Campus `updateCampus` and `deleteCampus` left as homework stubs (request lookup only, with step comments). `getCampuses`, `getCampusStats`, `getCampusById`, and `createCampus` stay implemented.
